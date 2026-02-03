@@ -85,15 +85,13 @@ def estimate_weights_and_risks(df):
     ad = estimate_weights(df)
     
     # estimate the risks and risk differences 
-    crude = estimate_risks_rd(ad, a_col="a", y_col="y")
     iptw  = estimate_risks_rd(ad, a_col="a", y_col="y", w_col="iptw")
     iosw_iptw = estimate_risks_rd(ad, a_col="a", y_col="y", w_col="iosw_iptw")
 
     # concatenate into a single dataframe and label rows
-    crude["method"] = "Crude"
     iptw["method"] = "IPTW"
     iosw_iptw["method"] = "IOSW x IPTW"
-    res = pd.concat([crude, iptw, iosw_iptw])
+    res = pd.concat([iptw, iosw_iptw])
 
     return(res)
 

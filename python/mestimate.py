@@ -58,9 +58,9 @@ for k in range(len(all_sims)):
 
         # IPTWxIOSW
         # Estimating function for  causal risk under a=1
-        ee_r1 = s*(a_no_nan*y_no_nan*wt - mu1)         # Weighted conditional mean
+        ee_r1 = a_no_nan*wt*(y_no_nan - mu1)       # Weighted conditional mean (HAJEK)
         # Estimating function for causal risk under a=0
-        ee_r0 = s*((1-a_no_nan)*y_no_nan*wt - mu0)     # Weighted conditional mean
+        ee_r0 = (1-a_no_nan)*wt*(y_no_nan - mu0)    # Weighted conditional mean (HAJEK)
         # Estimating function for causal RD
         ee_rd = np.ones(d.shape[0])*((mu1 - mu0) - delta)
 

@@ -12,7 +12,7 @@ trial1_y1 = pl*py11 + (1-pl)*py10
 trial1_y0 = pl*py01 + (1-pl)*py00
 truth = trial1_y1 - trial1_y0
 
-mest <- read.csv("data/results/mest_results_no_cluster.csv")
+mest <- read.csv("data/results/mest_results.csv")
 
 boot <- read.csv("data/results/bootstrap_results.csv")
 
