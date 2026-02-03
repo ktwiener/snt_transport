@@ -1,0 +1,6 @@
+PWD /Users/cwiener/Library/CloudStorage/OneDrive-UniversityofNorthCarolinaatChapelHill/Documents/PhD/Research/Conferences/ICPE/2026/SNT_MEST
+INPUT /usr/local/texlive/2025/texmf.cnf
+INPUT /usr/local/texlive/2025/texmf-dist/web2c/texmf.cnf
+INPUT /usr/local/texlive/2025/texmf-var/web2c/xetex/xelatex.fmt
+INPUT /Users/cwiener/anaconda3/bin/python
+OUTPUT python.log
