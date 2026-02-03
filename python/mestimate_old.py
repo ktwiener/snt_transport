@@ -78,6 +78,6 @@ result['Coef'] = estr.theta
 ci = estr.confidence_intervals()
 result['LCL'] = ci[:, 0]
 result['UCL'] = ci[:, 1]
-result.round(2)
 
-np.save("data/results/mestimation_results.npy", h)
+fin = pd.concat(mest_results)
+fin.to_csv("data/results/mest_results.csv")
