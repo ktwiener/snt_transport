@@ -11,7 +11,7 @@ from helpers import estimate_weights_and_risks
 all_sims = np.load("data/random/simulation_combined.npy", allow_pickle=True).item()
 all_bootstraps = np.load("data/random/bootstrap_indices.npy", allow_pickle=True).item()
 
-sim_results = {}
+sim_results = [None]*len(all_sims)
 
 cols = ["l", "a", "y", "s"] # necessary columns to subset
 B = all_bootstraps[0].shape[1] # number of bootstraps
@@ -39,4 +39,6 @@ for k in all_sims.keys():
     res["sim"] = k + 1
     sim_results[k] = res
 
-np.save("data/results/estimation_results.npy", sim_results)
+np.save("data/results/bootstrap_results.npy", sim_results)
+final_boots = pd.concat(sim_results)
+final_boots.to_csv("data/results/bootstrap_results.csv")

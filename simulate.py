@@ -20,6 +20,7 @@ py10 = 0.15 # P(Y^1=1|L=0) = 0.15
 py01 = 0.9  # P(Y^0=1|L=1) = 0.9
 py00 = 0.05 # P(Y^0=1|L=0) = 0.05
 
+truth = (py11 - py01)*pl + (py10 - py00)*(1-pl)
 sim_data = {}
 bootstrap_indices = {}
 
@@ -56,7 +57,7 @@ for k in range(sims):
     trial1["a"] = np.nan  # set exposure to missing for target pop
 
     # create target population and stack with combined data
-    combined= pd.concat([analysis_data, trial1])
+    combined= pd.concat([analysis_data, trial1]).sort_values("id")
 
     # bootstrap ids for each simulation
     bootstrap_indices[k] = np.random.randint(0, n, size=(n, B))
