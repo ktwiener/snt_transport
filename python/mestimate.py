@@ -4,23 +4,34 @@
 
 import numpy as np
 import pandas as pd
+import time
+import os
+
+os.environ["OMP_NUM_THREADS"] = "1"
+os.environ["MKL_NUM_THREADS"] = "1"
+os.environ["OPENBLAS_NUM_THREADS"] = "1"
+
 from delicatessen import MEstimator
 from delicatessen.estimating_equations import ee_regression
 from delicatessen.utilities import inverse_logit
 from delicatessen.utilities import aggregate_efuncs
 
+from joblib import Parallel, delayed
+
 # read in data/random/combined.csv
 all_sims = np.load("data/random/simulation_combined.npy", allow_pickle=True).item()
-mest_results = [None]*len(all_sims)
+sims_n = len(all_sims)
+#sims_n = 7
+mest_results = [None]*sims_n
 
-for k in range(len(all_sims)):
-    d = all_sims[k]
+start_cpu_time = time.perf_counter()
+def run_one_sim(k):
+#for k in range(len(all_sims)):
+    d = all_sims[k].copy()
     d["intercept"] = 1.0
 
     s = np.asarray(d['s']) # s = 0 for target pop, s = 1 to analysis pop
-    a = np.asarray(d['a']) # missing in target pop
     W = np.asarray(d[['intercept', 'l']]) 
-    Y = np.asarray(d['y']) # missing in target pop
     group = np.asarray(d['id'])
 
     y_no_nan = np.asarray(d['y'].fillna(-1))
@@ -98,7 +109,16 @@ for k in range(len(all_sims)):
     result['LCL'] = ci[:, 0]
     result['UCL'] = ci[:, 1]
     result['sim'] = k + 1
-    mest_results[k] = result
+    return result
 
+n_jobs = max(1, os.cpu_count() - 1)  # leave one core free
+mest_results = Parallel(n_jobs=n_jobs, backend="loky", verbose=10)(
+    delayed(run_one_sim)(k) for k in range(sims_n)
+)
+end_cpu_time = time.perf_counter()
+elapsed_cpu_time =end_cpu_time - start_cpu_time
+print(f"CPU time: {elapsed_cpu_time:.4f} seconds")
 fin = pd.concat(mest_results)
 fin.to_csv("data/results/mest_results.csv")
+
+np.savetxt("data/results/mest_time.txt", [elapsed_cpu_time])

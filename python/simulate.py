@@ -9,8 +9,8 @@ from helpers import generate_outcome
 
 np.random.seed(24601)
 
-sims = 10  # Number of simulations
-B = 300    # Number of bootstrap samples
+sims = 1000  # Number of simulations
+B = 600    # Number of bootstrap samples
 n = 5000  # Sample size
 pl = 0.45 # Prevalence of outcome predictor L
 pa = 0.5  # Probability of treatment (randomized)

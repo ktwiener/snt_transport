@@ -14,7 +14,7 @@ truth = trial1_y1 - trial1_y0
 
 mest <- read.csv("data/results/mest_results.csv")
 
-boot <- read.csv("data/results/bootstrap_results.csv")
+boot <- read.csv("data/results/boot_results.csv")
 
 mest |>
   dplyr::filter(Param %in% c("delta", "delta_ipt", "mu_1", "mu_0", "ipt_mu_1", "ipt_mu_0")) |>
