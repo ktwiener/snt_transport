@@ -10,7 +10,7 @@ from helpers import generate_outcome
 np.random.seed(24601)
 
 sims = 1000  # Number of simulations
-n = 5000  # Sample size
+sample_size = 5000  # Sample size
 pl = 0.45 # Prevalence of outcome predictor L
 pa = 0.2  # Probability of treatment (randomized)
 
@@ -24,7 +24,7 @@ truth_t1 = (py11 - py01)*pl + (py10 - py00)*(1-pl)
 sim_data = {}
 #bootstrap_indices = {}
 
-for k in range(sims):
+def generate_one_sim(k, n):
 # trial 1
 
     trial1 = pd.DataFrame({
@@ -61,9 +61,11 @@ for k in range(sims):
 
     sim_data[k] = combined
 
+    return(combined)
 
 
-
+for k in range(sims):
+    sim_data[k] = generate_one_sim(k, n = sample_size)
 
 # save out o data/random folder
 np.save("data/random/simulation_combined.npy", sim_data)
