@@ -10,19 +10,19 @@ from helpers import generate_outcome
 np.random.seed(24601)
 
 sims = 1000  # Number of simulations
-B = 600    # Number of bootstrap samples
 n = 5000  # Sample size
 pl = 0.45 # Prevalence of outcome predictor L
-pa = 0.5  # Probability of treatment (randomized)
+pa = 0.2  # Probability of treatment (randomized)
 
 py11 = 0.7  # P(Y^1=1|L=1) = 0.7
 py10 = 0.15 # P(Y^1=1|L=0) = 0.15
 py01 = 0.9  # P(Y^0=1|L=1) = 0.9
 py00 = 0.05 # P(Y^0=1|L=0) = 0.05
 
-truth = (py11 - py01)*pl + (py10 - py00)*(1-pl)
+truth_t1 = (py11 - py01)*pl + (py10 - py00)*(1-pl)
+
 sim_data = {}
-bootstrap_indices = {}
+#bootstrap_indices = {}
 
 for k in range(sims):
 # trial 1
@@ -45,7 +45,7 @@ for k in range(sims):
     trial2 = trial1.loc[trial1["y"] == 0].copy()
     # re-randomize A
     trial2["a"] = np.random.binomial(1, trial2["a"]*1 + (1-trial2["a"])*pa)  
-    trial2["trial"] = 2
+    #trial2["trial"] = 0
     # generate new outcomes from trial 2
     trial2 = generate_outcome(trial2, py11, py10, py01, py00)
 
@@ -59,9 +59,6 @@ for k in range(sims):
     # create target population and stack with combined data
     combined= pd.concat([analysis_data, trial1]).sort_values("id")
 
-    # bootstrap ids for each simulation
-    bootstrap_indices[k] = np.random.randint(0, n, size=(n, B))
-
     sim_data[k] = combined
 
 
@@ -70,5 +67,3 @@ for k in range(sims):
 
 # save out o data/random folder
 np.save("data/random/simulation_combined.npy", sim_data)
-
-np.save("data/random/bootstrap_indices.npy", bootstrap_indices)

@@ -33,8 +33,10 @@ mest |>
     bias = mean(Coef - true_val),
     ase = sqrt(mean(SE^2)),
     cov = mean(in_ci),
-    ese = sd(Coef)
-  )
+    ese = sd(Coef),
+    rmse = sqrt(mean((Coef-true_val)^2))
+  ) |>
+  dplyr::filter(Param %in% c("delta", "delta_ipt"))-> mest_res
 
 boot |>
   dplyr::group_by(method) |>
@@ -46,5 +48,7 @@ boot |>
     exp_risk1 = mean(risk1),
     ese = sd(rd),
     ase = sqrt(mean(bootstrap_se^2)),
-    cov = mean((rd - 1.96*bootstrap_se) <= truth & truth <= rd + 1.96*bootstrap_se)
-  )
+    cov = mean((rd - 1.96*bootstrap_se) <= truth & truth <= rd + 1.96*bootstrap_se),
+    rmse = sqrt(mean((rd-truth)^2))
+  ) -> boot_res
+
