@@ -93,9 +93,10 @@ def run_one_sim(k):
         # Returning stacked estimating functions in order of parameters
         return ee_group_level
 
-    estr = MEstimator(psi, init=[0, 0, 0, 0, 0.5, 0.5, 0.5, 0.5, 0, 0])
+    estr = MEstimator(psi, init=[-0.99, -0.15, 0.66, -0.53, -0.035, 0.002, 
+                                 0.327, 0.329, 0.432, 0.397])
     estr.estimate()
-
+ 
     # Formatting results into a nice table
     result = pd.DataFrame()
     result['Param'] = ['alpha_0', 'alpha_1', 
