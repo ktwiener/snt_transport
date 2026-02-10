@@ -85,10 +85,10 @@ def run_one_sim(k):
         ee_ipt_rd = np.ones(d.shape[0])*((gamma1 - gamma0) - delta_ipt)
 
         ee_group_level = aggregate_efuncs(np.vstack([ee_logit_ps,
-                                                     ee_logit_samp,
-                                                     ee_r1, ee_r0,
-                                                     ee_ipt_r1, ee_ipt_r0,
-                                                     ee_rd, ee_ipt_rd]),
+                                                    ee_logit_samp,
+                                                    ee_r1, ee_r0,
+                                                    ee_ipt_r1, ee_ipt_r0,
+                                                    ee_rd, ee_ipt_rd]),
                                             group = group)
         # Returning stacked estimating functions in order of parameters
         return ee_group_level
